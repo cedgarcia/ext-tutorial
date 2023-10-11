@@ -1,0 +1,41 @@
+{
+    "manifest_version": "ext-v1",
+    "name": "Tutorial Extension",
+    "version": "1.0.0",
+    "version_name": "Initial",
+    "short_name": "ext-tutorial",
+    "description": "Let's learn to build our first extension!",
+    "author": "Johnny Appleseed",
+    "homepage_url": "https://ext.store",
+    "icons": {
+        "128": "extension-tutorial-icon.png",
+        "banner": "extension-tutorial-banner.png",
+        "background": "extension-tutorial-background.png"
+    },
+    "scripts": [
+        "main.js"
+    ],
+    "modules": {
+        "console": {
+            "permissions": ["*"]
+        },
+        "runtime": {
+            "permissions": ["*"]
+        },
+        "tabs": {
+            "permissions": ["*"]
+        },
+        "timers": {
+            "permissions": ["*"]
+        },
+        "windows": {
+            "permissions": ["*"]
+        },
+        "websessions": {
+            "permissions": ["*"]
+        },
+        "webviews": {
+            "permissions": ["*"]
+        }
+    }
+}
