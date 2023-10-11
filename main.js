@@ -1,5 +1,12 @@
+console.log("Hello World!");
+
+ext.runtime.onEnable.addListener(() => {
+  console.log("Extension Enabled");
+});
+
 let myTab = null;
 let myWindow = null;
+let myWebview = null;
 
 ext.runtime.onExtensionClick.addListener(async () => {
   console.log("Extension Clicked");
@@ -8,6 +15,18 @@ ext.runtime.onExtensionClick.addListener(async () => {
     text: "Tutorial Tab",
   });
   myWindow = await ext.windows.create();
+  const myWindowSize = await ext.windows.getContentSize(myWindow.id);
+  myWebview = await ext.webviews.create({
+    window: myWindow,
+    bounds: {
+      x: 0,
+      y: 0,
+      width: myWindowSize.width,
+      height: myWindowSize.height,
+    },
+    autoResize: { width: true, height: true },
+  });
+  await ext.webviews.loadURL(myWebview.id, "https://www.ext.store");
 });
 
 ext.tabs.onClickedClose.addListener(async () => {
