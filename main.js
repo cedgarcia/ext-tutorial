@@ -13,6 +13,8 @@ ext.runtime.onExtensionClick.addListener(async () => {
   if (myTab) return;
   myTab = await ext.tabs.create({
     text: "Tutorial Tab",
+    mutable: true,
+    muted: false,
   });
   myWindow = await ext.windows.create();
   const myWindowSize = await ext.windows.getContentSize(myWindow.id);
@@ -26,7 +28,7 @@ ext.runtime.onExtensionClick.addListener(async () => {
     },
     autoResize: { width: true, height: true },
   });
-  await ext.webviews.loadURL(myWebview.id, "https://www.ext.store");
+  await ext.webviews.loadURL(myWebview.id, "https://www.youtube.com");
 });
 
 ext.tabs.onClickedClose.addListener(async () => {
@@ -47,10 +49,25 @@ ext.tabs.onClicked.addListener(async () => {
   }
 });
 
-// listen for window close events
 ext.windows.onClosed.addListener(async () => {
   if (myTab && myTab.id) {
     await ext.tabs.remove(myTab.id);
     myTab = null;
+  }
+});
+
+ext.webviews.onPageTitleUpdated.addListener(async (_event, details) => {
+  if (myWindow && myWindow.id) {
+    await ext.windows.setTitle(myWindow.id, details.title);
+  }
+  if (myTab && myTab.id) {
+    await ext.tabs.update(myTab.id, { text: details.title });
+  }
+});
+
+ext.tabs.onClickedMute.addListener(async (_event, tab) => {
+  await ext.tabs.update(tab.id, { muted: !tab.muted });
+  if (myWebview && myWebview.id) {
+    await ext.webviews.setAudioMuted(myWebview.id, !tab.muted);
   }
 });
